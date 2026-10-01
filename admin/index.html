@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zain Tailor — Admin Dashboard</title>
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+ <section id="loginView" class="login-page">
+  <div class="login-card">
+
+    <div class="brand-mark">ZT</div>
+
+    <p class="eyebrow">Zain Tailor</p>
+    <h1>Admin Dashboard</h1>
+
+    <p class="muted">
+      Sign in to manage appointments and customer messages.
+    </p>
+
+    <form id="loginForm">
+
+      <label>
+        Username
+        <input
+          id="username"
+          autocomplete="username"
+          required
+        />
+      </label>
+
+      <label>
+        Password
+      </label>
+
+      <div class="password-wrapper">
+
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          required
+        />
+
+        <!-- Eye Icon -->
+        <button
+          type="button"
+          id="togglePassword"
+          class="show-password"
+          aria-label="Show password"
+        >
+
+          <!-- Normal Eye -->
+          <svg
+            id="eyeOpen"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2 12C2 12 5.5 5 12 5C18.5 5 22 12 22 12C22 12 18.5 19 12 19C5.5 19 2 12 2 12Z"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+
+            <circle
+              cx="12"
+              cy="12"
+              r="3"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+          </svg>
+
+          <!-- Eye Off -->
+          <svg
+            id="eyeClosed"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style="display: none;"
+          >
+            <path
+              d="M3 3L21 21"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+
+            <path
+              d="M10.5 5.2C11 5.1 11.5 5 12 5C18.5 5 22 12 22 12C22 12 20.5 15 17.5 17.2"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+
+            <path
+              d="M6.5 6.8C3.5 9 2 12 2 12C2 12 5.5 19 12 19C13.5 19 14.8 18.7 16 18.2"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+
+        </button>
+
+      </div>
+
+      <button
+        class="primary"
+        type="submit"
+      >
+        Sign in
+      </button>
+
+      <p
+        id="loginError"
+        class="error"
+      ></p>
+
+    </form>
+
+    <a
+      class="back-link"
+      href="../index.html"
+    >
+      ← Back to website
+    </a>
+
+  </div>
+</section>
+<script>
+  const password = document.getElementById("password");
+  const togglePassword = document.getElementById("togglePassword");
+
+  const eyeOpen = document.getElementById("eyeOpen");
+  const eyeClosed = document.getElementById("eyeClosed");
+
+  togglePassword.addEventListener("click", function () {
+
+    if (password.type === "password") {
+
+      // Show password
+      password.type = "text";
+
+      // Show eye-off icon
+      eyeOpen.style.display = "none";
+      eyeClosed.style.display = "block";
+
+      togglePassword.setAttribute(
+        "aria-label",
+        "Hide password"
+      );
+
+    } else {
+
+      // Hide password
+      password.type = "password";
+
+      // Show normal eye icon
+      eyeOpen.style.display = "block";
+      eyeClosed.style.display = "none";
+
+      togglePassword.setAttribute(
+        "aria-label",
+        "Show password"
+      );
+
+    }
+
+  });
+</script>
+
+<section id="dashboardView" class="dashboard hidden">
+    <aside class="sidebar">
+      <div class="sidebar-brand"><span>ZT</span><div><strong>Zain Tailor</strong><small>Admin Panel</small></div></div>
+      <nav>
+        <button class="nav-item active" data-section="overview">Overview</button>
+        <button class="nav-item" data-section="appointments">Appointments</button>
+        <button class="nav-item" data-section="messages">Messages</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <a href="../index.html">View website</a>
+        <button id="logoutBtn" class="logout">Log out</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar"><div><p class="eyebrow">Management</p><h1 id="pageTitle">Overview</h1></div><button id="refreshBtn" class="secondary">↻ Refresh</button></header>
+
+      <section id="overviewSection" class="section">
+        <div class="stats">
+          <article class="stat"><span>Total appointments</span><strong id="totalAppointments">0</strong></article>
+          <article class="stat"><span>Pending</span><strong id="pendingAppointments">0</strong></article>
+          <article class="stat"><span>Confirmed</span><strong id="confirmedAppointments">0</strong></article>
+          <article class="stat"><span>Messages</span><strong id="totalMessages">0</strong></article>
+        </div>
+        <div class="panel"><div class="panel-head"><div><h2>Recent appointments</h2><p>Latest customer booking requests.</p></div><button class="text-btn" data-go="appointments">View all →</button></div><div id="recentAppointments" class="table-wrap"></div></div>
+      </section>
+
+      <section id="appointmentsSection" class="section hidden">
+        <div class="section-head"><div><h2>Appointments</h2><p>Review and update booking status.</p></div><button id="deleteAllAppointments" class="danger-outline">Delete all</button></div>
+        <div class="toolbar"><input id="appointmentSearch" placeholder="Search name, phone, email..." /><select id="appointmentFilter"><option value="">All statuses</option><option>Pending</option><option>Confirmed</option><option>Completed</option><option>Cancelled</option></select></div>
+        <div class="panel"><div id="appointmentsTable" class="table-wrap"></div></div>
+      </section>
+
+      <section id="messagesSection" class="section hidden">
+        <div class="section-head"><div><h2>Customer messages</h2><p>Messages submitted through the contact form.</p></div><button id="deleteAllMessages" class="danger-outline">Delete all</button></div>
+        <div class="panel"><div id="messagesTable" class="table-wrap"></div></div>
+      </section>
+    </main>
+  </section>
+
+  <script src="js/config.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

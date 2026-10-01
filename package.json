@@ -1,0 +1,7 @@
+{
+  "name":"zain-tailor-frontend-local",
+  "version":"1.0.0",
+  "private":true,
+  "scripts":{"dev":"vite --host localhost","start":"vite --host localhost"},
+  "devDependencies":{"vite":"^6.1.0"}
+}
